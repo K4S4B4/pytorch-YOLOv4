@@ -184,6 +184,12 @@ def post_processing(img, conf_thresh, nms_thresh, output):
 
     num_classes = confs.shape[2]
 
+
+    #for i in range(box_array.shape[0]):
+    #    for j in range(box_array.shape[1]):
+    #        for k in range(confs.shape[2]):
+
+
     # [batch, num, 4]
     box_array = box_array[:, :, 0]
 
@@ -197,6 +203,11 @@ def post_processing(img, conf_thresh, nms_thresh, output):
     for i in range(box_array.shape[0]):
        
         argwhere = max_conf[i] > conf_thresh
+
+        for j in range(confs.shape[1]):
+            if argwhere[j]:
+                print(j)
+
         l_box_array = box_array[i, argwhere, :]
         l_max_conf = max_conf[i, argwhere]
         l_max_id = max_id[i, argwhere]

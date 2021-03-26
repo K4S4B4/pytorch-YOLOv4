@@ -467,6 +467,14 @@ if __name__ == "__main__":
         height = sys.argv[4]
         width = int(sys.argv[5])
         namesfile = int(sys.argv[6])
+    #####################################
+    elif len(sys.argv) == 5:
+        n_classes = 80
+        weightfile = sys.argv[1]
+        imgfile = sys.argv[2]
+        height = int(sys.argv[3])
+        width = int(sys.argv[4])
+    #####################################
     else:
         print('Usage: ')
         print('  python models.py num_classes weightfile imgfile namefile')

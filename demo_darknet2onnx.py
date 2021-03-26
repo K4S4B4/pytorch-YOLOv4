@@ -30,21 +30,42 @@ def main(cfg_file, weight_file, image_path, batch_size):
 
 
 def detect(session, image_src):
-    IN_IMAGE_H = session.get_inputs()[0].shape[2]
-    IN_IMAGE_W = session.get_inputs()[0].shape[3]
+    ###############################################################
+    IN_IMAGE_H = session.get_inputs()[0].shape[1]
+    IN_IMAGE_W = session.get_inputs()[0].shape[2]
+    ###############################################################
+
+    #IN_IMAGE_H = session.get_inputs()[0].shape[2]
+    #IN_IMAGE_W = session.get_inputs()[0].shape[3]
 
     # Input
     resized = cv2.resize(image_src, (IN_IMAGE_W, IN_IMAGE_H), interpolation=cv2.INTER_LINEAR)
-    img_in = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
-    img_in = np.transpose(img_in, (2, 0, 1)).astype(np.float32)
-    img_in = np.expand_dims(img_in, axis=0)
-    img_in /= 255.0
+    ###############################################################
+    img_in = np.expand_dims(resized, axis=0).astype(np.uint8)
+    #img_in = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
+    #img_in = img_in.astype(np.float32)
+    #img_in = np.transpose(img_in, (2, 0, 1)).astype(np.float32)
+    #img_in /= 255.0
+    ###############################################################
     print("Shape of the network input: ", img_in.shape)
 
     # Compute
     input_name = session.get_inputs()[0].name
+    print(input_name)
+    outputs = session.get_outputs()
+    print(outputs[0].name)
+    print(outputs[1].name)
 
     outputs = session.run(None, {input_name: img_in})
+
+    #########################################################
+    start = time.time()
+    for i in range(10):
+        outputs = session.run(None, {input_name: img_in})
+    delta_time = (time.time() - start)/10
+    print("onnx model inference took")
+    print(delta_time)
+    #########################################################
 
     boxes = post_processing(img_in, 0.4, 0.6, outputs)
 
@@ -63,11 +84,14 @@ def detect(session, image_src):
 
 if __name__ == '__main__':
     print("Converting to onnx and running demo ...")
-    if len(sys.argv) == 5:
+    if len(sys.argv) == 4:
+    #if len(sys.argv) == 5:
         cfg_file = sys.argv[1]
         weight_file = sys.argv[2]
         image_path = sys.argv[3]
-        batch_size = int(sys.argv[4])
+        ###############################################
+        batch_size = 2 #int(sys.argv[4])
+        ###############################################
         main(cfg_file, weight_file, image_path, batch_size)
     else:
         print('Please run this way:\n')

@@ -146,6 +146,14 @@ class Darknet(nn.Module):
         self.seen = 0
 
     def forward(self, x):
+
+        #########################################
+        x = x[:,:,:,[2, 1, 0]]
+        x = x.permute(0,3,1,2)
+        x = x.float();
+        x *= 0.00392157;
+        #########################################
+
         ind = -2
         self.loss = None
         outputs = dict()
