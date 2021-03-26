@@ -93,3 +93,7 @@ external/
 draws/
 plot/
 
+resource1/yolov4.conv.137.pth
+resource1/yolov4.pth
+yolov4_-1_3_416_416_dynamic.onnx
+yolov4_1_3_320_320_static.onnx
