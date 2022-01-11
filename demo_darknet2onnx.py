@@ -84,13 +84,14 @@ def detect(session, image_src):
 
 if __name__ == '__main__':
     print("Converting to onnx and running demo ...")
-    if len(sys.argv) == 4:
+    if True:
+    #if len(sys.argv) == 4:
     #if len(sys.argv) == 5:
-        cfg_file = sys.argv[1]
-        weight_file = sys.argv[2]
-        image_path = sys.argv[3]
+        cfg_file = 'cfg/yolov4-tiny.cfg'
+        weight_file = 'weight/yolov4-tiny.weights'
+        image_path = 'resource/testdata/IMG_20210208_135527.jpg'
         ###############################################
-        batch_size = 2 #int(sys.argv[4])
+        batch_size = 1 #int(sys.argv[4])
         ###############################################
         main(cfg_file, weight_file, image_path, batch_size)
     else:
